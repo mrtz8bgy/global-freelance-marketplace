@@ -1,0 +1,10 @@
+<?php
+declare(strict_types=1);
+final class Job extends Model
+{
+	public function openForFreelancer(int $userId): array { $s = $this->db->prepare('SELECT j.*, p.display_name AS employer_name, (SELECT COUNT(*) FROM proposals pr WHERE pr.job_id = j.id AND pr.freelancer_id = :user_id) AS already_applied FROM jobs j LEFT JOIN profiles p ON p.user_id = j.employer_id WHERE j.status = \'open\' ORDER BY j.created_at DESC'); $s->execute(['user_id' => $userId]); return $s->fetchAll(); }
+	public function forEmployer(int $employerId): array { $s = $this->db->prepare('SELECT j.*, (SELECT COUNT(*) FROM proposals pr WHERE pr.job_id = j.id) AS proposal_count FROM jobs j WHERE j.employer_id = :employer_id ORDER BY j.created_at DESC'); $s->execute(['employer_id' => $employerId]); return $s->fetchAll(); }
+	public function create(int $employerId, array $data): int { $s = $this->db->prepare('INSERT INTO jobs (employer_id, title, slug, description, budget_min, budget_max, status) VALUES (:employer_id, :title, :slug, :description, :budget_min, :budget_max, :status)'); $s->execute(['employer_id' => $employerId, 'title' => $data['title'], 'slug' => $data['slug'], 'description' => $data['description'], 'budget_min' => $data['budget_min'], 'budget_max' => $data['budget_max'], 'status' => 'open']); return (int) $this->db->lastInsertId(); }
+	public function addSkills(int $jobId, array $skillIds): void { $s = $this->db->prepare('INSERT IGNORE INTO job_skills (job_id, skill_id) VALUES (:job_id, :skill_id)'); foreach ($skillIds as $skillId) $s->execute(['job_id' => $jobId, 'skill_id' => (int) $skillId]); }
+	public function featuredPublic(): array { return $this->db->query("SELECT j.id,j.title,j.description,j.budget_min,j.budget_max,p.display_name AS employer_name FROM jobs j LEFT JOIN profiles p ON p.user_id=j.employer_id WHERE j.status='open' ORDER BY j.is_featured DESC,j.created_at DESC LIMIT 6")->fetchAll(); }
+}

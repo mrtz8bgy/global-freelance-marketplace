@@ -1,0 +1,30 @@
+<?php
+declare(strict_types=1);
+
+$router->get('/', [HomeController::class, 'index']);
+$router->get('/login', [AuthController::class, 'showLogin']);
+$router->post('/login', [AuthController::class, 'login']);
+$router->get('/register', [AuthController::class, 'showRegister']);
+$router->post('/register', [AuthController::class, 'register']);
+$router->post('/logout', [AuthController::class, 'logout']);
+$router->get('/dashboard/freelancer', [FreelancerController::class, 'dashboard']);
+$router->post('/dashboard/freelancer/profile', [FreelancerController::class, 'saveProfile']);
+$router->post('/dashboard/freelancer/skills', [FreelancerController::class, 'addSkill']);
+$router->post('/dashboard/freelancer/proposals', [FreelancerController::class, 'submitProposal']);
+$router->get('/dashboard/employer', [EmployerController::class, 'dashboard']);
+$router->post('/dashboard/employer/profile', [EmployerController::class, 'saveProfile']);
+$router->post('/dashboard/employer/jobs', [EmployerController::class, 'createJob']);
+$router->post('/dashboard/employer/invitations', [EmployerController::class, 'inviteFreelancer']);
+$router->post('/dashboard/employer/proposals/status', [EmployerController::class, 'updateProposalStatus']);
+$router->post('/dashboard/employer/proposals/reply', [EmployerController::class, 'replyToProposal']);
+$router->get('/portfolio/create', [PortfolioController::class, 'createForm']);
+$router->post('/portfolio/create', [PortfolioController::class, 'create']);
+$router->get('/portfolio', [PortfolioController::class, 'publicIndex']);
+$router->get('/admin/login', [AdminController::class, 'showLogin']);
+$router->post('/admin/login', [AdminController::class, 'login']);
+$router->get('/admin', [AdminController::class, 'dashboard']);
+$router->get('/admin/users', [AdminController::class, 'users']);
+$router->post('/admin/users/verify', [AdminController::class, 'verifyUser']);
+$router->post('/admin/users/suspend', [AdminController::class, 'suspendUser']);
+$router->post('/admin/logout', [AdminController::class, 'logout']);
+$router->get('/404', [ErrorController::class, 'notFound']);

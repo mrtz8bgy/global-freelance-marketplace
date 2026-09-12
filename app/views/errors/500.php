@@ -1,0 +1,1 @@
+<section class="error-page"><div class="eyebrow">ERROR 500</div><h1>Something went wrong.</h1><p>Our team has been notified. Please try again shortly.</p><a class="button" href="<?= url('/') ?>">Back home ↗</a></section>

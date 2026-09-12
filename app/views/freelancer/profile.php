@@ -1,0 +1,1 @@
+<section class="section"><div class="eyebrow">FREELANCER PROFILE</div><h1>Professional profile</h1><p class="hero-copy">Profile details, portfolio, skills, experience and reviews will appear here.</p></section>

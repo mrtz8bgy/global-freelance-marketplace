@@ -1,0 +1,1 @@
+<section class="error-page"><div class="eyebrow">ERROR 404</div><h1>That page wandered off.</h1><p>Let's get you back to something useful.</p><a class="button" href="<?= url('/') ?>">Back home ↗</a></section>
