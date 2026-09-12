@@ -33,7 +33,7 @@ html {
 }
 
 body { 
-  color: var(--ink); 
+  color: #1b8260; 
   background: var(--cream);
   font: 16px/1.7 'Vazirmatn', 'DM Sans', Arial, sans-serif;
   direction: rtl;

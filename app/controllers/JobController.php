@@ -1,1 +1,1 @@
-<?php declare(strict_types=1); final class JobController extends Controller { public function index(): void { $this->view('jobs/index'); } }
+<?php declare(strict_types=1); final class JobController extends Controller { public function index(): void { try { $jobs=(new Job())->openPublic(); } catch (Throwable $e) { error_log($e->__toString()); $jobs=[]; } $this->view('jobs/index',['title'=>'پروژه‌های موجود','jobs'=>$jobs]); } }

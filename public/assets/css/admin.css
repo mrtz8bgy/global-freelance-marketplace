@@ -1,49 +1,95 @@
-/* ==================== Admin Dashboard Layout ==================== */
+/* ==================== Admin Dashboard Layout - Luxury Edition ==================== */
 .admin-body {
   display: flex;
   min-height: 100vh;
-  background: 
-    radial-gradient(circle at 15% 20%, rgba(217,249,91,.04), transparent 35%),
-    radial-gradient(circle at 85% 80%, rgba(21,33,29,.03), transparent 40%),
-    #f1f4ef;
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(201, 169, 97, 0.06), transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(58, 42, 24, 0.04), transparent 45%),
+    var(--cream, #faf8f3);
   position: relative;
   overflow-x: hidden;
+  font-family: 'Vazirmatn', sans-serif;
 }
 
-/* ==================== Admin Sidebar ==================== */
+/* بافت ظریف noise */
+.admin-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--noise, url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"));
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+/* ==================== Admin Sidebar لوکس ==================== */
 .admin-sidebar {
-  width: 260px;
-  background: linear-gradient(180deg, #15211d 0%, #1a2a24 50%, #15211d 100%);
+  width: 272px;
+  background: linear-gradient(180deg, #1a120a 0%, #2a1e10 50%, #1a120a 100%);
   color: #fff;
-  padding: 35px 22px;
+  padding: 40px 24px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: auto;
   z-index: 100;
-  box-shadow: 4px 0 24px rgba(21,33,29,.15);
-  transition: all .4s cubic-bezier(.4, 0, .2, 1);
+  box-shadow:
+    4px 0 32px rgba(26, 18, 10, 0.25),
+    1px 0 0 rgba(201, 169, 97, 0.1) inset;
+  transition: var(--transition-smooth, all 0.6s cubic-bezier(0.22, 1, 0.36, 1));
+  overflow: hidden;
 }
 
+/* خط طلایی عمودی سمت راست */
 .admin-sidebar::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 1px;
   height: 100%;
-  background: linear-gradient(135deg, rgba(217,249,91,.03), transparent 50%);
+  background: linear-gradient(180deg,
+    transparent,
+    var(--gold, #c9a961) 20%,
+    var(--gold-light, #e8d5a0) 50%,
+    var(--gold, #c9a961) 80%,
+    transparent);
+  opacity: 0.4;
+}
+
+/* هاله طلایی شناور */
+.admin-sidebar::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle,
+    rgba(201, 169, 97, 0.15) 0%,
+    rgba(201, 169, 97, 0.05) 40%,
+    transparent 70%);
   pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -40px) scale(1.1); }
 }
 
 .admin-sidebar .brand {
   font-size: 19px;
-  margin-bottom: 55px;
+  margin-bottom: 60px;
   position: relative;
   z-index: 1;
-  transition: all .4s cubic-bezier(.4, 0, .2, 1);
+  transition: var(--transition-fast, all 0.3s cubic-bezier(0.22, 1, 0.36, 1));
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .admin-sidebar .brand:hover {
@@ -51,57 +97,89 @@
 }
 
 .admin-sidebar .brand-mark {
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  box-shadow: 0 4px 16px rgba(217,249,91,.3);
-  animation: admin-glow 3s ease-in-out infinite;
+  width: 42px;
+  height: 42px;
+  font-size: 18px;
+  font-family: 'Playfair Display', serif;
+  box-shadow: var(--shadow-gold,
+    0 4px 12px rgba(201, 169, 97, 0.15),
+    0 8px 24px rgba(201, 169, 97, 0.1));
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
 }
 
-@keyframes admin-glow {
-  0%, 100% { box-shadow: 0 4px 16px rgba(217,249,91,.3); }
-  50% { box-shadow: 0 4px 28px rgba(217,249,91,.6); }
+.admin-sidebar .brand-mark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent);
+  animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+.admin-sidebar .brand:hover .brand-mark {
+  transform: rotate(180deg) scale(1.05);
+  box-shadow:
+    0 4px 20px rgba(201, 169, 97, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.4) inset;
 }
 
 .admin-sidebar .brand > span:last-child {
-  color: var(--lime);
+  color: var(--gold, #c9a961);
   font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .admin-sidebar nav {
   display: grid;
-  gap: 8px;
+  gap: 6px;
   position: relative;
   z-index: 1;
 }
 
 .admin-sidebar nav a {
-  padding: 14px 16px;
-  border-radius: 10px;
-  color: #b8c3bc;
-  font-size: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius, 4px);
+  color: #8a7a5f;
+  font-size: 13px;
   font-weight: 500;
+  letter-spacing: 0.01em;
   position: relative;
   overflow: hidden;
-  transition: all .3s cubic-bezier(.4, 0, .2, 1);
+  transition: var(--transition-fast);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  isolation: isolate;
 }
 
+/* نشانگر طلایی سمت راست */
 .admin-sidebar nav a::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 50%;
   right: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--lime);
-  opacity: 0;
-  transition: all .3s;
-  border-radius: 0 3px 3px 0;
+  width: 2px;
+  height: 0;
+  background: var(--gradient-gold,
+    linear-gradient(135deg, #e8d5a0 0%, #c9a961 50%, #a88840 100%));
+  transform: translateY(-50%);
+  transition: height 0.4s var(--ease-lux, cubic-bezier(0.22, 1, 0.36, 1));
+  border-radius: 2px;
 }
 
+/* هاله radial hover */
 .admin-sidebar nav a::after {
   content: '';
   position: absolute;
@@ -110,22 +188,29 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(217,249,91,.1);
-  transition: all .5s;
+  background: radial-gradient(circle,
+    rgba(201, 169, 97, 0.15),
+    transparent 70%);
+  transition: width 0.6s var(--ease-lux), height 0.6s var(--ease-lux);
   transform: translate(50%, -50%);
+  z-index: -1;
 }
 
 .admin-sidebar nav a:hover,
 .admin-sidebar nav a:first-child {
-  background: linear-gradient(135deg, #263731, #1e2f28);
-  color: #d9f95b;
-  transform: translateX(-6px);
-  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  background: linear-gradient(135deg,
+    rgba(201, 169, 97, 0.12),
+    rgba(201, 169, 97, 0.04));
+  color: var(--gold-light, #e8d5a0);
+  transform: translateX(-4px);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(201, 169, 97, 0.1) inset;
 }
 
 .admin-sidebar nav a:hover::before,
 .admin-sidebar nav a:first-child::before {
-  opacity: 1;
+  height: 60%;
 }
 
 .admin-sidebar nav a:hover::after {
@@ -135,56 +220,64 @@
 
 .admin-sidebar nav a:first-child {
   font-weight: 700;
+  color: var(--gold, #c9a961);
 }
 
 /* آیکون‌های منو */
 .admin-sidebar nav a .icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  transition: transform .3s;
+  transition: transform 0.4s var(--ease-lux);
+  opacity: 0.85;
 }
 
-.admin-sidebar nav a:hover .icon {
-  transform: scale(1.2) rotate(5deg);
+.admin-sidebar nav a:hover .icon,
+.admin-sidebar nav a:first-child .icon {
+  transform: scale(1.15) rotate(-5deg);
+  opacity: 1;
 }
 
-/* ==================== Admin Logout ==================== */
+/* ==================== Admin Logout لوکس ==================== */
 .admin-logout {
   margin-top: auto;
-  background: none;
-  border: 2px solid rgba(255,255,255,.1);
-  color: #b8c3bc;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(201, 169, 97, 0.15);
+  color: #8a7a5f;
   font: inherit;
   cursor: pointer;
   text-align: right;
-  padding: 14px;
-  border-radius: 10px;
-  transition: all .3s;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  transition: var(--transition-fast);
   position: relative;
   z-index: 1;
   font-size: 13px;
   display: flex;
   align-items: center;
   gap: 12px;
+  letter-spacing: 0.01em;
+  overflow: hidden;
 }
 
 .admin-logout::before {
   content: '🚪';
-  font-size: 16px;
-  transition: transform .3s;
+  font-size: 15px;
+  transition: transform 0.4s var(--ease-lux);
+  filter: grayscale(1) brightness(2);
 }
 
 .admin-logout:hover {
-  background: rgba(225, 112, 85, .15);
-  border-color: rgba(225, 112, 85, .4);
-  color: #E17055;
+  background: rgba(225, 112, 85, 0.08);
+  border-color: rgba(225, 112, 85, 0.3);
+  color: #e17055;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+  box-shadow: 0 8px 24px rgba(225, 112, 85, 0.15);
 }
 
 .admin-logout:hover::before {
   transform: translateX(-4px);
+  filter: none;
 }
 
 /* ==================== Admin Main ==================== */
@@ -192,49 +285,58 @@
   flex: 1;
   min-width: 0;
   position: relative;
+  z-index: 1;
 }
 
-/* ==================== Admin Topbar ==================== */
+/* ==================== Admin Topbar شیشه‌ای ==================== */
 .admin-topbar {
-  height: 80px;
-  background: rgba(255, 255, 255, .95);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--line);
+  height: 84px;
+  background: rgba(250, 248, 243, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--line, #ebe6dc);
   padding: 0 5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--muted);
+  color: var(--muted, #6b7770);
   font-size: 14px;
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 2px 8px rgba(21,33,29,.04);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 4px 24px rgba(58, 42, 24, 0.03);
 }
 
 .admin-topbar::after {
   content: '';
   position: absolute;
   bottom: -1px;
+  left: 0;
   right: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--lime), transparent);
-  opacity: .3;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold, #c9a961),
+    transparent);
+  opacity: 0.6;
 }
 
 .admin-badge {
-  background: linear-gradient(135deg, #eef5c7, #e4edb8);
-  color: #596d08;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  background: var(--champagne, #f7f3e9);
+  color: var(--gold-dark, #a88840);
+  padding: 8px 18px;
+  border-radius: var(--radius-full, 999px);
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   position: relative;
   overflow: hidden;
-  transition: all .3s;
+  transition: var(--transition-fast);
   cursor: pointer;
+  border: 1px solid var(--line-gold, rgba(201, 169, 97, 0.25));
 }
 
 .admin-badge::before {
@@ -244,14 +346,22 @@
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,.3), transparent 60%);
+  background: radial-gradient(circle,
+    rgba(232, 213, 160, 0.4),
+    transparent 60%);
   opacity: 0;
-  transition: opacity .3s;
+  transition: opacity 0.3s;
 }
 
 .admin-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(217,249,91,.3);
+  background: var(--gradient-gold,
+    linear-gradient(135deg, #e8d5a0 0%, #c9a961 50%, #a88840 100%));
+  color: var(--ink, #1a120a);
+  box-shadow: var(--shadow-gold,
+    0 4px 12px rgba(201, 169, 97, 0.15),
+    0 8px 24px rgba(201, 169, 97, 0.1));
+  border-color: transparent;
 }
 
 .admin-badge:hover::before {
@@ -266,16 +376,16 @@
 
 /* ==================== Admin Content ==================== */
 .admin-content {
-  padding: 55px 5%;
-  max-width: 1350px;
+  padding: 56px 5%;
+  max-width: 1360px;
   margin: 0 auto;
-  animation: admin-fade-in .6s ease-out;
+  animation: admin-fade-in 0.8s var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 @keyframes admin-fade-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -288,188 +398,261 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 40px;
+  margin-bottom: 44px;
   gap: 20px;
   position: relative;
+  padding-bottom: 20px;
 }
 
+/* خط طلایی زیر عنوان */
 .admin-heading::after {
   content: '';
   position: absolute;
-  bottom: -15px;
+  bottom: 0;
   right: 0;
   width: 80px;
-  height: 4px;
-  background: var(--gradient-lime, linear-gradient(135deg, #d9f95b, #a8c82d));
-  border-radius: 4px;
-  opacity: .6;
+  height: 2px;
+  background: var(--gradient-gold);
+  border-radius: 2px;
+  opacity: 0.7;
 }
 
 .admin-heading h1 {
   font-size: 44px;
   margin: 0;
-  letter-spacing: -1.5px;
+  letter-spacing: -0.03em;
   position: relative;
   display: inline-block;
+  font-family: 'Vazirmatn', 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--ink, #1a120a);
+  line-height: 1.1;
 }
 
 .admin-heading h1::after {
   content: '';
   position: absolute;
-  bottom: 6px;
+  bottom: 4px;
   right: 0;
   width: 100%;
-  height: 8px;
-  background: var(--lime);
-  opacity: .25;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold, #c9a961), transparent);
+  opacity: 0.5;
   z-index: -1;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
-/* ==================== Admin Stats ==================== */
+/* ==================== Admin Stats لوکس ==================== */
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
 .admin-stats article,
 .admin-panel {
-  background: #fff;
-  border: 1px solid var(--line);
-  padding: 28px;
-  border-radius: var(--radius, 16px);
-  box-shadow: 0 2px 8px rgba(21,33,29,.04);
+  background: var(--surface-elevated, #fffefb);
+  border: 1px solid var(--line, #ebe6dc);
+  padding: 32px;
+  border-radius: var(--radius-lg, 8px);
+  box-shadow: var(--shadow-sm,
+    0 1px 2px rgba(58, 42, 24, 0.04),
+    0 2px 4px rgba(58, 42, 24, 0.03),
+    0 4px 8px rgba(58, 42, 24, 0.02));
   position: relative;
   overflow: hidden;
-  transition: all .4s cubic-bezier(.4, 0, .2, 1);
+  transition: var(--transition-smooth);
 }
 
+/* خط طلایی بالای کارت */
 .admin-stats article::before {
   content: '';
   position: absolute;
   top: 0;
   right: 0;
   width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--lime), transparent);
+  height: 2px;
+  background: var(--gradient-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-lux);
+}
+
+/* هاله طلایی گوشه */
+.admin-stats article::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle,
+    rgba(201, 169, 97, 0.08),
+    transparent 70%);
   opacity: 0;
-  transition: opacity .4s;
+  transition: opacity 0.6s var(--ease-lux);
+  pointer-events: none;
 }
 
 .admin-stats article:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(21,33,29,.1);
-  border-color: var(--lime);
+  box-shadow: var(--shadow-lg,
+    0 4px 8px rgba(58, 42, 24, 0.04),
+    0 16px 32px rgba(58, 42, 24, 0.08),
+    0 32px 64px rgba(58, 42, 24, 0.06));
+  border-color: var(--line-gold, rgba(201, 169, 97, 0.25));
 }
 
 .admin-stats article:hover::before {
+  transform: scaleX(1);
+}
+
+.admin-stats article:hover::after {
   opacity: 1;
 }
 
 .admin-stats span {
   display: block;
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 15px;
-  font-weight: 500;
-  letter-spacing: .2px;
+  color: var(--muted, #6b7770);
+  font-size: 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .admin-stats strong {
-  font: 700 36px 'Space Grotesk', sans-serif;
-  letter-spacing: -1px;
-  transition: all .3s;
+  font: 700 38px 'Playfair Display', 'Space Grotesk', serif;
+  letter-spacing: -0.02em;
+  transition: var(--transition-smooth);
   display: inline-block;
+  background: var(--gradient-gold,
+    linear-gradient(135deg, #e8d5a0 0%, #c9a961 50%, #a88840 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .admin-stats article:hover strong {
-  transform: scale(1.1);
+  transform: scale(1.06);
 }
 
 /* رنگ‌های وضعیت */
 .admin-stats .pending strong {
-  color: #a37400;
-  animation: pending-pulse 2s ease-in-out infinite;
+  background: linear-gradient(135deg, #d4a017 0%, #a37400 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: pending-pulse 3s ease-in-out infinite;
 }
 
 @keyframes pending-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .6; }
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.85; filter: brightness(1.1); }
 }
 
 .admin-stats .danger strong {
-  color: #a63c30;
-  animation: danger-pulse 2s ease-in-out infinite;
+  background: linear-gradient(135deg, #e17055 0%, #a63c30 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: danger-pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes danger-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .5; }
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.8; filter: brightness(1.15); }
 }
 
-/* ==================== Admin Panel ==================== */
+/* ==================== Admin Panel لوکس ==================== */
 .admin-panel {
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 .admin-panel h2 {
   font-size: 24px;
-  margin: 0 0 22px;
-  letter-spacing: -0.3px;
+  margin: 0 0 26px;
+  letter-spacing: -0.02em;
   position: relative;
-  padding-right: 16px;
+  padding-right: 18px;
+  color: var(--ink, #1a120a);
+  font-weight: 700;
 }
 
+/* نشانگر عمودی طلایی */
 .admin-panel h2::before {
   content: '';
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 4px;
-  height: 26px;
-  background: var(--gradient-lime, linear-gradient(135deg, #d9f95b, #a8c82d));
-  border-radius: 4px;
+  width: 3px;
+  height: 24px;
+  background: var(--gradient-gold);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(201, 169, 97, 0.5);
 }
 
-/* ==================== Quick Links ==================== */
+/* ==================== Quick Links لوکس ==================== */
 .quick-links {
   display: grid;
-  gap: 10px;
+  gap: 0;
 }
 
 .quick-links a {
   border-top: 1px solid var(--line);
-  padding: 18px 0;
+  padding: 20px 0;
   font-weight: 600;
+  font-size: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all .3s;
+  transition: var(--transition-fast);
   position: relative;
   color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+.quick-links a:first-child {
+  border-top: none;
+}
+
+.quick-links a::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--gradient-gold);
+  transform: translateY(-50%);
+  transition: width 0.4s var(--ease-lux);
 }
 
 .quick-links a::after {
   content: '←';
   opacity: 0;
-  transition: all .3s;
+  transition: var(--transition-fast);
   transform: translateX(10px);
+  color: var(--gold, #c9a961);
+  font-size: 16px;
 }
 
 .quick-links a:hover {
-  color: #71870d;
-  padding-right: 16px;
+  color: var(--gold-dark, #a88840);
+  padding-right: 20px;
+}
+
+.quick-links a:hover::before {
+  width: 12px;
 }
 
 .quick-links a:hover::after {
   opacity: 1;
   transform: translateX(0);
-  color: #71870d;
 }
 
-/* ==================== Filter Links ==================== */
+/* ==================== Filter Links لوکس ==================== */
 .filter-links {
   display: flex;
   gap: 10px;
@@ -477,15 +660,17 @@
 }
 
 .filter-links a {
-  background: #fff;
-  border: 2px solid var(--line);
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 13px;
+  background: var(--surface-elevated, #fffefb);
+  border: 1px solid var(--line, #ebe6dc);
+  padding: 11px 20px;
+  border-radius: var(--radius-full, 999px);
+  font-size: 12px;
   font-weight: 600;
-  transition: all .3s;
+  letter-spacing: 0.02em;
+  transition: var(--transition-fast);
   position: relative;
   overflow: hidden;
+  color: var(--muted, #6b7770);
 }
 
 .filter-links a::before {
@@ -496,17 +681,23 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: var(--lime);
-  transition: all .5s;
+  background: radial-gradient(circle,
+    rgba(201, 169, 97, 0.2),
+    transparent 70%);
+  transition: width 0.6s var(--ease-lux), height 0.6s var(--ease-lux);
   transform: translate(50%, -50%);
+  z-index: 0;
 }
 
 .filter-links a:hover {
-  background: var(--lime);
-  border-color: var(--lime);
-  color: var(--ink);
+  background: var(--gradient-gold);
+  border-color: transparent;
+  color: var(--ink, #1a120a);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(217,249,91,.3);
+  box-shadow: var(--shadow-gold,
+    0 4px 12px rgba(201, 169, 97, 0.15),
+    0 8px 24px rgba(201, 169, 97, 0.1));
+  font-weight: 700;
 }
 
 .filter-links a:hover::before {
@@ -514,12 +705,33 @@
   height: 200px;
 }
 
-/* ==================== Table ==================== */
+.filter-links a > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================== Table لوکس ==================== */
 .table-wrap {
   padding: 0;
   overflow: auto;
-  border-radius: var(--radius, 16px);
+  border-radius: var(--radius-lg, 8px);
   position: relative;
+  background: var(--surface-elevated, #fffefb);
+  border: 1px solid var(--line, #ebe6dc);
+  box-shadow: var(--shadow-sm);
+}
+
+/* خط طلایی بالای جدول */
+.table-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gradient-gold);
+  opacity: 0.6;
+  z-index: 11;
 }
 
 .table-wrap::after {
@@ -527,41 +739,44 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 20px;
+  width: 24px;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.8));
+  background: linear-gradient(90deg, transparent, rgba(255, 254, 251, 0.9));
   pointer-events: none;
+  z-index: 9;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
+  font-family: 'Vazirmatn', sans-serif;
 }
 
 th,
 td {
   text-align: right;
-  padding: 18px 20px;
+  padding: 20px 22px;
   border-bottom: 1px solid var(--line);
   white-space: nowrap;
-  transition: background .3s;
+  transition: background 0.3s;
 }
 
 th {
-  background: #fafbf8;
-  color: var(--muted);
-  font-size: 11px;
+  background: linear-gradient(180deg, #faf7f0 0%, #f5f1e8 100%);
+  color: var(--gold-dark, #a88840);
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .5px;
+  letter-spacing: 0.12em;
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 2px solid var(--line-gold);
 }
 
 tbody tr {
-  transition: all .3s;
+  transition: var(--transition-fast);
   position: relative;
 }
 
@@ -572,12 +787,15 @@ tbody tr::before {
   right: 0;
   width: 0;
   height: 100%;
-  background: rgba(217,249,91,.05);
-  transition: width .4s;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(201, 169, 97, 0.06));
+  transition: width 0.5s var(--ease-lux);
+  pointer-events: none;
 }
 
 tbody tr:hover {
-  background: #fafbf8;
+  background: var(--champagne, #f7f3e9);
 }
 
 tbody tr:hover::before {
@@ -593,30 +811,36 @@ td small {
 
 td strong {
   font-weight: 600;
-  color: var(--ink);
-  transition: color .3s;
+  color: var(--ink, #1a120a);
+  transition: color 0.3s;
+  letter-spacing: -0.005em;
 }
 
 tbody tr:hover td strong {
-  color: #71870d;
+  color: var(--gold-dark, #a88840);
 }
 
 td small {
-  color: var(--muted);
+  color: var(--muted, #6b7770);
   font-size: 11px;
-  margin-top: 4px;
+  margin-top: 5px;
+  letter-spacing: 0.01em;
 }
 
-/* ==================== Status Badges ==================== */
+/* ==================== Status Badges لوکس ==================== */
 .status {
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 7px 14px;
+  border-radius: var(--radius-full, 999px);
   font-size: 11px;
   font-weight: 700;
-  display: inline-block;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   position: relative;
   overflow: hidden;
-  transition: all .3s;
+  transition: var(--transition-fast);
+  border: 1px solid transparent;
 }
 
 .status::before {
@@ -625,48 +849,54 @@ td small {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  margin-left: 6px;
   animation: status-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px currentColor;
 }
 
 @keyframes status-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .3; }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
 }
 
 .status-pending {
-  background: #fff1cf;
+  background: linear-gradient(135deg, #fef7e0, #fbecce);
   color: #956b00;
+  border-color: rgba(149, 107, 0, 0.15);
 }
 
 .status-pending::before {
-  background: #956b00;
+  background: #d4a017;
+  color: #d4a017;
 }
 
 .status-active {
-  background: #e1f3d8;
+  background: linear-gradient(135deg, #f0f7ea, #e5f2da);
   color: #3d751b;
+  border-color: rgba(61, 117, 27, 0.15);
 }
 
 .status-active::before {
-  background: #3d751b;
+  background: #5a9e2a;
+  color: #5a9e2a;
 }
 
 .status-suspended {
-  background: #f9dfdc;
+  background: linear-gradient(135deg, #fbebe8, #f9dfdc);
   color: #96362b;
+  border-color: rgba(150, 54, 43, 0.15);
 }
 
 .status-suspended::before {
-  background: #96362b;
+  background: #c5533f;
+  color: #c5533f;
 }
 
 .status:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* ==================== Action Buttons ==================== */
+/* ==================== Action Buttons لوکس ==================== */
 .inline-form {
   display: inline;
   position: relative;
@@ -674,16 +904,22 @@ td small {
 }
 
 .action-button {
-  border: 0;
+  border: 1px solid transparent;
   background: none;
   cursor: pointer;
   font: inherit;
   font-size: 12px;
-  margin-left: 10px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: all .3s;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-left: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full, 999px);
+  transition: var(--transition-fast);
   position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .approve {
@@ -692,13 +928,18 @@ td small {
 
 .approve::before {
   content: '✓';
-  margin-left: 4px;
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .approve:hover {
-  background: #e1f3d8;
+  background: linear-gradient(135deg, #f0f7ea, #e5f2da);
+  border-color: rgba(61, 117, 27, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(61,117,27,.2);
+  box-shadow:
+    0 4px 8px rgba(61, 117, 27, 0.12),
+    0 2px 0 rgba(255, 255, 255, 0.5) inset;
+  color: #3d751b;
 }
 
 .suspend {
@@ -707,30 +948,40 @@ td small {
 
 .suspend::before {
   content: '✗';
-  margin-left: 4px;
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .suspend:hover {
-  background: #f9dfdc;
+  background: linear-gradient(135deg, #fbebe8, #f9dfdc);
+  border-color: rgba(150, 54, 43, 0.2);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(150,54,43,.2);
+  box-shadow:
+    0 4px 8px rgba(150, 54, 43, 0.12),
+    0 2px 0 rgba(255, 255, 255, 0.5) inset;
+  color: #96362b;
 }
 
-/* ==================== Empty State ==================== */
+/* ==================== Empty State لوکس ==================== */
 .empty {
   text-align: center;
-  color: var(--muted);
-  padding: 50px;
+  color: var(--muted, #6b7770);
+  padding: 64px 40px;
   font-size: 14px;
   position: relative;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, transparent, rgba(201, 169, 97, 0.02));
+  letter-spacing: -0.005em;
 }
 
 .empty::before {
   content: '📋';
   display: block;
-  font-size: 56px;
-  margin-bottom: 20px;
-  animation: empty-float 3s ease-in-out infinite;
+  font-size: 60px;
+  margin-bottom: 22px;
+  animation: empty-float 4s ease-in-out infinite;
+  filter: grayscale(0.3) sepia(0.3);
+  opacity: 0.8;
 }
 
 @keyframes empty-float {
@@ -742,84 +993,90 @@ td small {
 @media (max-width: 1024px) {
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    gap: 16px;
   }
-  
+
   .admin-content {
-    padding: 40px 4%;
+    padding: 44px 4%;
   }
 }
 
 @media (max-width: 800px) {
   .admin-sidebar {
-    width: 70px;
-    padding: 22px 10px;
+    width: 76px;
+    padding: 26px 12px;
   }
-  
+
   .admin-sidebar .brand {
     font-size: 0;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 44px;
+    gap: 0;
   }
-  
+
   .admin-sidebar .brand-mark {
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
-  
+
   .admin-sidebar nav a {
     font-size: 0;
     text-align: center;
     justify-content: center;
-    padding: 14px;
+    padding: 16px;
+    gap: 0;
   }
-  
+
   .admin-sidebar nav a .icon {
     margin: 0;
+    width: 20px;
+    height: 20px;
   }
-  
-  .admin-sidebar nav a:first-letter {
-    font-size: 22px;
+
+  .admin-sidebar nav a::before {
+    right: -1px;
   }
-  
+
   .admin-logout {
     font-size: 0;
     justify-content: center;
-    padding: 14px;
+    padding: 16px;
   }
-  
+
   .admin-logout::before {
     margin: 0;
+    font-size: 18px;
   }
-  
+
   .admin-stats {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 14px;
   }
-  
+
   .admin-heading {
     display: block;
   }
-  
+
   .admin-heading h1 {
     font-size: 34px;
+    letter-spacing: -0.02em;
   }
-  
+
   .filter-links {
-    margin-top: 20px;
+    margin-top: 24px;
     flex-wrap: wrap;
   }
-  
+
   .admin-content {
-    padding: 30px 4%;
+    padding: 32px 4%;
   }
-  
+
   .admin-stats article,
   .admin-panel {
-    padding: 22px;
+    padding: 24px;
   }
-  
+
   .admin-stats strong {
     font-size: 30px;
   }
@@ -829,31 +1086,671 @@ td small {
   .admin-topbar {
     padding: 0 4%;
     font-size: 12px;
+    height: 72px;
   }
-  
+
+  .admin-badge {
+    padding: 6px 12px;
+    font-size: 10px;
+  }
+
   .admin-stats {
     grid-template-columns: 1fr;
   }
-  
+
   .admin-heading h1 {
     font-size: 28px;
   }
-  
+
   .admin-stats article,
   .admin-panel {
-    padding: 18px;
-    border-radius: 12px;
+    padding: 20px;
+    border-radius: var(--radius);
   }
-  
+
+  .admin-stats strong {
+    font-size: 28px;
+  }
+
   th,
   td {
     padding: 14px 16px;
     font-size: 12px;
   }
-  
+
+  th {
+    font-size: 9px;
+  }
+
   .quick-links a {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     text-align: center;
+    align-items: center;
+  }
+
+  .quick-links a:hover {
+    padding-right: 0;
+  }
+
+  .empty {
+    padding: 44px 24px;
+  }
+
+  .empty::before {
+    font-size: 48px;
+  }
+}
+
+/* ==================== حالت تاریک ==================== */
+@media (prefers-color-scheme: dark) {
+  .admin-body {
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(201, 169, 97, 0.08), transparent 45%),
+      radial-gradient(ellipse at 85% 80%, rgba(255, 255, 255, 0.02), transparent 45%),
+      var(--cream, #0f1411);
+  }
+
+  .admin-body::before {
+    mix-blend-mode: screen;
+    opacity: 0.4;
+  }
+
+  .admin-topbar {
+    background: rgba(15, 20, 17, 0.9);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .admin-stats article,
+  .admin-panel,
+  .table-wrap {
+    background: var(--surface-elevated, #1e2420);
+    border-color: var(--line, #2a322c);
+  }
+
+  .admin-stats span {
+    color: var(--muted, #8a938d);
+  }
+
+  .admin-panel h2,
+  .admin-heading h1 {
+    color: var(--ink, #f0ede6);
+  }
+
+  .quick-links a {
+    color: var(--ink, #f0ede6);
+  }
+
+  .filter-links a {
+    background: var(--surface-elevated, #1e2420);
+    border-color: var(--line, #2a322c);
+    color: var(--muted, #8a938d);
+  }
+
+  th {
+    background: linear-gradient(180deg, #1a201c 0%, #141a16 100%);
+    color: var(--gold-light, #e8d5a0);
+  }
+
+  tbody tr:hover {
+    background: var(--champagne, #1a201c);
+  }
+
+  td strong {
+    color: var(--ink, #f0ede6);
+  }
+
+  .admin-badge {
+    background: rgba(201, 169, 97, 0.1);
+    color: var(--gold-light, #e8d5a0);
+  }
+}
+
+/* ==================== کاهش حرکت ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .admin-body *,
+  .admin-body *::before,
+  .admin-body *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ==================== Banner Admin Form - Luxury Edition ==================== */
+.banner-admin-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  padding: 48px 44px;
+  background: linear-gradient(180deg, #fffefb 0%, #faf7f0 100%);
+  border: 1px solid var(--line, #ebe6dc);
+  border-radius: var(--radius-lg, 8px);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(58, 42, 24, 0.04),
+    0 4px 12px rgba(58, 42, 24, 0.05),
+    0 16px 48px rgba(58, 42, 24, 0.04);
+  transition: var(--transition-smooth, all 0.6s cubic-bezier(0.22, 1, 0.36, 1));
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+/* خط طلایی بالای فرم */
+.banner-admin-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #e8d5a0 20%,
+    #c9a961 50%,
+    #a88840 80%,
+    transparent 100%);
+  opacity: 0.9;
+}
+
+/* هاله طلایی گوشه بالا-چپ */
+.banner-admin-form::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: 340px;
+  height: 340px;
+  background: radial-gradient(circle,
+    rgba(201, 169, 97, 0.08) 0%,
+    rgba(201, 169, 97, 0.03) 40%,
+    transparent 70%);
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease-lux, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.banner-admin-form:hover {
+  box-shadow:
+    0 2px 4px rgba(58, 42, 24, 0.04),
+    0 12px 32px rgba(58, 42, 24, 0.08),
+    0 24px 64px rgba(58, 42, 24, 0.06);
+  border-color: rgba(201, 169, 97, 0.35);
+  transform: translateY(-2px);
+}
+
+.banner-admin-form:hover::after {
+  opacity: 1.4;
+}
+
+/* ==================== فیلدهای ورودی ==================== */
+.banner-admin-form input[type="text"],
+.banner-admin-form input[type="number"],
+.banner-admin-form input[type="url"],
+.banner-admin-form input:not([type]),
+.banner-admin-form textarea,
+.banner-admin-form select {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid #e8e1d3;
+  border-radius: 6px;
+  background: #fffefb;
+  color: #3a2a18;
+  font: inherit;
+  font-size: 14px;
+  font-family: 'Vazirmatn', sans-serif;
+  letter-spacing: -0.005em;
+  transition:
+    border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s,
+    transform 0.3s;
+  position: relative;
+  z-index: 1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Placeholder */
+.banner-admin-form input::placeholder,
+.banner-admin-form textarea::placeholder {
+  color: #b0a693;
+  font-weight: 400;
+  opacity: 1;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.banner-admin-form input:focus::placeholder,
+.banner-admin-form textarea:focus::placeholder {
+  color: #c9a961;
+  transform: translateX(-4px);
+}
+
+/* حالت hover */
+.banner-admin-form input:hover:not(:focus),
+.banner-admin-form textarea:hover:not(:focus),
+.banner-admin-form select:hover:not(:focus) {
+  border-color: rgba(201, 169, 97, 0.4);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(201, 169, 97, 0.06);
+}
+
+/* حالت focus لوکس */
+.banner-admin-form input:focus,
+.banner-admin-form textarea:focus,
+.banner-admin-form select:focus {
+  outline: none;
+  border-color: #c9a961;
+  background: #fff;
+  box-shadow:
+    0 0 0 4px rgba(201, 169, 97, 0.12),
+    0 4px 12px rgba(201, 169, 97, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  transform: translateY(-2px);
+}
+
+/* input hidden - مخفی */
+.banner-admin-form input[type="hidden"] {
+  display: none;
+}
+
+/* Textarea - تمام عرض */
+.banner-admin-form textarea {
+  grid-column: 1 / -1;
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.9;
+  font-family: 'Vazirmatn', sans-serif;
+  padding-top: 16px;
+}
+
+/* Select - فلش طلایی سفارشی */
+.banner-admin-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #c9a961 50%),
+    linear-gradient(135deg, #c9a961 50%, transparent 50%);
+  background-position:
+    calc(1.5rem) calc(50% - 2px),
+    calc(1.5rem) calc(50% + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-left: 48px;
+  cursor: pointer;
+}
+
+.banner-admin-form select:hover {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #a88840 50%),
+    linear-gradient(135deg, #a88840 50%, transparent 50%);
+}
+
+/* گزینه‌های داخل select */
+.banner-admin-form select option {
+  background: #fffefb;
+  color: #3a2a18;
+  padding: 12px;
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+/* ==================== چیدمان شبکه‌ای هوشمند ==================== */
+
+/* عنوان اصلی - تمام عرض */
+.banner-admin-form input[name="title"] {
+  grid-column: 1 / -1;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 17px 20px;
+}
+
+/* آدرس تصویر - تمام عرض */
+.banner-admin-form input[name="image_url"] {
+  grid-column: 1 / -1;
+}
+
+/* ترتیب و وضعیت - کنار هم */
+.banner-admin-form input[name="sort_order"] {
+  grid-column: 1 / 2;
+}
+
+.banner-admin-form select[name="status"] {
+  grid-column: 2 / 3;
+}
+
+/* ==================== دکمه ذخیره - نسخه لوکس ==================== */
+.banner-admin-form .button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 48px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Vazirmatn', sans-serif;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #3a2a18 0%, #2a1e10 50%, #3a2a18 100%);
+  color: #f0e5d0;
+  border: 1px solid #4a3820;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s,
+    border-color 0.4s;
+  margin-top: 12px;
+  min-width: 220px;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(58, 42, 24, 0.15),
+    0 8px 24px rgba(58, 42, 24, 0.15),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* خط طلایی پایین دکمه */
+.banner-admin-form .button::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    #c9a961 50%,
+    transparent);
+  opacity: 0.6;
+  transition: opacity 0.4s;
+}
+
+/* گرادیان طلایی hover */
+.banner-admin-form .button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    #e8d5a0 0%,
+    #c9a961 50%,
+    #a88840 100%);
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: -2;
+}
+
+/* Shimmer effect */
+.banner-admin-form .button .button-shimmer,
+.banner-admin-form .button > span::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(232, 213, 160, 0.4),
+    transparent);
+  transform: skewX(-20deg);
+  transition: left 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* آیکون ذخیره */
+.banner-admin-form .button:not(:empty)::first-letter {
+  font-size: 16px;
+}
+
+.banner-admin-form .button:hover {
+  transform: translateY(-3px);
+  color: #2a1e10;
+  border-color: #c9a961;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 4px 8px rgba(201, 169, 97, 0.25),
+    0 12px 32px rgba(201, 169, 97, 0.3),
+    0 24px 64px rgba(201, 169, 97, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+.banner-admin-form .button:hover::after {
+  opacity: 1;
+}
+
+.banner-admin-form .button:hover::before {
+  opacity: 1;
+  background: linear-gradient(90deg,
+    transparent,
+    #2a1e10 50%,
+    transparent);
+}
+
+.banner-admin-form .button:active {
+  transform: translateY(-1px) scale(0.98);
+  transition-duration: 0.1s;
+  box-shadow:
+    0 2px 4px rgba(201, 169, 97, 0.3),
+    0 4px 12px rgba(201, 169, 97, 0.2);
+}
+
+.banner-admin-form .button:focus-visible {
+  outline: 2px solid #c9a961;
+  outline-offset: 3px;
+}
+
+/* آیکون 💾 قبل از متن دکمه */
+.banner-admin-form .button > span::after,
+.banner-admin-form .button::marker {
+  content: '';
+}
+
+/* اگر دکمه فقط متن دارد، آیکون با ::before اضافه می‌شود */
+.banner-admin-form .button:not([data-no-icon])::before {
+  content: '💾 ';
+  position: absolute;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  top: auto;
+  height: auto;
+  width: auto;
+  background: none;
+  opacity: 1;
+  margin-left: 6px;
+  font-size: 14px;
+  filter: sepia(0.5) saturate(1.5);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.banner-admin-form .button:hover:not([data-no-icon])::before {
+  transform: scale(1.15) rotate(-8deg);
+}
+
+/* ==================== حالت خطا ==================== */
+.banner-admin-form input:invalid:not(:placeholder-shown),
+.banner-admin-form textarea:invalid:not(:placeholder-shown) {
+  border-color: #d97a5f;
+  background: linear-gradient(135deg, #fffefb, #fef7f5);
+}
+
+.banner-admin-form input:invalid:not(:placeholder-shown):focus,
+.banner-admin-form textarea:invalid:not(:placeholder-shown):focus {
+  box-shadow:
+    0 0 0 4px rgba(217, 122, 95, 0.12),
+    0 4px 12px rgba(217, 122, 95, 0.1);
+  border-color: #d97a5f;
+}
+
+/* ==================== حالت موفق ==================== */
+.banner-admin-form input:valid:not(:placeholder-shown):not([type="hidden"]):not([type="number"]),
+.banner-admin-form textarea:valid:not(:placeholder-shown) {
+  border-color: rgba(201, 169, 97, 0.4);
+}
+
+/* ==================== ریسپانسیو ==================== */
+@media (max-width: 850px) {
+  .banner-admin-form {
+    grid-template-columns: 1fr;
+    padding: 36px 28px;
+    gap: 18px;
+  }
+
+  .banner-admin-form input[name="sort_order"],
+  .banner-admin-form select[name="status"] {
+    grid-column: 1 / -1;
+  }
+
+  .banner-admin-form .button {
+    width: 100%;
+    justify-self: stretch;
+    min-width: unset;
+    padding: 16px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-admin-form {
+    padding: 28px 20px;
+    gap: 16px;
+    border-radius: 6px;
+  }
+
+  .banner-admin-form::before {
+    height: 2px;
+  }
+
+  .banner-admin-form input,
+  .banner-admin-form textarea,
+  .banner-admin-form select {
+    padding: 13px 15px;
+    font-size: 13px;
+  }
+
+  .banner-admin-form input[name="title"] {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+
+  .banner-admin-form textarea {
+    min-height: 90px;
+  }
+
+  .banner-admin-form select {
+    padding-left: 42px;
+    background-position:
+      calc(1.2rem) calc(50% - 2px),
+      calc(1.2rem) calc(50% + 2px);
+    background-size: 5px 5px, 5px 5px;
+  }
+
+  .banner-admin-form .button {
+    padding: 15px 28px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    min-width: unset;
+  }
+
+  .banner-admin-form .button:not([data-no-icon])::before {
+    font-size: 12px;
+  }
+}
+
+/* ==================== حالت تاریک ==================== */
+@media (prefers-color-scheme: dark) {
+  .banner-admin-form {
+    background: linear-gradient(180deg, #1e2420 0%, #1a201c 100%);
+    border-color: #2a322c;
+  }
+
+  .banner-admin-form input,
+  .banner-admin-form textarea,
+  .banner-admin-form select {
+    background: #141a16;
+    border-color: #2a322c;
+    color: #f0ede6;
+  }
+
+  .banner-admin-form input::placeholder,
+  .banner-admin-form textarea::placeholder {
+    color: #6b746e;
+  }
+
+  .banner-admin-form input:hover:not(:focus),
+  .banner-admin-form textarea:hover:not(:focus),
+  .banner-admin-form select:hover:not(:focus) {
+    background: #1a201c;
+    border-color: rgba(201, 169, 97, 0.4);
+  }
+
+  .banner-admin-form input:focus,
+  .banner-admin-form textarea:focus,
+  .banner-admin-form select:focus {
+    background: #1e2420;
+    border-color: #c9a961;
+    box-shadow:
+      0 0 0 4px rgba(201, 169, 97, 0.15),
+      0 4px 12px rgba(201, 169, 97, 0.12);
+  }
+
+  .banner-admin-form select option {
+    background: #1e2420;
+    color: #f0ede6;
+  }
+
+  /* دکمه در حالت تاریک - برعکس */
+  .banner-admin-form .button {
+    background: linear-gradient(135deg, #e8d5a0 0%, #c9a961 50%, #a88840 100%);
+    color: #2a1e10;
+    border-color: #c9a961;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 2px 4px rgba(201, 169, 97, 0.2),
+      0 8px 24px rgba(201, 169, 97, 0.15),
+      0 1px 0 rgba(255, 255, 255, 0.4) inset;
+  }
+
+  .banner-admin-form .button::before {
+    background: linear-gradient(90deg, transparent, #2a1e10 50%, transparent);
+  }
+
+  .banner-admin-form .button::after {
+    background: linear-gradient(135deg, #3a2a18 0%, #2a1e10 50%, #3a2a18 100%);
+  }
+
+  .banner-admin-form .button:hover {
+    color: #f0e5d0;
+    border-color: #4a3820;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow:
+      0 4px 8px rgba(58, 42, 24, 0.3),
+      0 12px 32px rgba(58, 42, 24, 0.2);
+  }
+
+  .banner-admin-form .button:hover::before {
+    background: linear-gradient(90deg, transparent, #c9a961 50%, transparent);
+  }
+
+  .banner-admin-form::after {
+    background: radial-gradient(circle, rgba(201, 169, 97, 0.12), transparent 70%);
+  }
+}
+
+/* ==================== کاهش حرکت ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .banner-admin-form,
+  .banner-admin-form *,
+  .banner-admin-form *::before,
+  .banner-admin-form *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
