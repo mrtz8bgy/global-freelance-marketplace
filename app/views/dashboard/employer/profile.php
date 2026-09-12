@@ -1,0 +1,1 @@
+<section class='dashboard-content'><div class='dashboard-heading'><div class='eyebrow'>کسب‌وکار</div><h1>پروفایل کسب‌وکار</h1></div><?php include __DIR__.'/partials/profile.php'; ?></section>

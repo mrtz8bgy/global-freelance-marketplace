@@ -1,0 +1,1 @@
+<section class='dashboard-content'><div class='dashboard-heading'><div class='eyebrow'>حساب کارفرما</div><h1>تنظیمات</h1></div><section class='dash-card'><h2>تنظیمات حساب و اعلان‌ها</h2><p class='muted'>اطلاعات حساب، اعلان‌ها و حریم خصوصی کسب‌وکار را مدیریت کنید.</p><a class='button' href='<?=url('/dashboard/employer')?>'>بازگشت به داشبورد</a></section></section>

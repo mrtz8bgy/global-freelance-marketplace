@@ -12,11 +12,13 @@ final class EmployerController extends Controller
 		}
 		return (int) Session::get('user_id');
 	}
-	public function dashboard(): void
-	{
-		$userId = $this->authorize();
-		$this->view('dashboard/employer/overview', ['title' => 'داشبورد کارفرما', 'profile' => (new Profile())->findByUserId($userId), 'skills' => (new Skill())->all(), 'jobs' => (new Job())->forEmployer($userId), 'freelancers' => (new Profile())->freelancers(), 'invitations' => (new Invitation())->forEmployer($userId), 'proposals' => (new Proposal())->forEmployer($userId)], 'employer');
-	}
+	private function data(int $userId): array { return ['profile'=>(new Profile())->findByUserId($userId),'skills'=>(new Skill())->all(),'jobs'=>(new Job())->forEmployer($userId),'freelancers'=>(new Profile())->freelancers(),'invitations'=>(new Invitation())->forEmployer($userId),'proposals'=>(new Proposal())->forEmployer($userId)]; }
+	public function dashboard(): void { $id=$this->authorize(); $this->view('dashboard/employer/overview',['title'=>'داشبورد کارفرما']+$this->data($id),'employer'); }
+	public function profilePage(): void { $id=$this->authorize(); $this->view('dashboard/employer/profile',['title'=>'پروفایل کسب‌وکار']+$this->data($id),'employer'); }
+	public function jobsPage(): void { $id=$this->authorize(); $this->view('dashboard/employer/jobs',['title'=>'پروژه‌های من']+$this->data($id),'employer'); }
+	public function proposalsPage(): void { $id=$this->authorize(); $this->view('dashboard/employer/proposals',['title'=>'پیشنهادهای دریافتی']+$this->data($id),'employer'); }
+	public function freelancersPage(): void { $id=$this->authorize(); $this->view('dashboard/employer/freelancers',['title'=>'فریلنسرها']+$this->data($id),'employer'); }
+	public function settingsPage(): void { $this->authorize(); $this->view('dashboard/employer/settings',['title'=>'تنظیمات حساب'],'employer'); }
 	public function saveProfile(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/employer'); }

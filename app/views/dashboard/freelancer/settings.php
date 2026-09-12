@@ -1,0 +1,1 @@
+<section class='dashboard-content'><div class='dashboard-heading'><div class='eyebrow'>حساب کاربری</div><h1>تنظیمات</h1></div><section class='dash-card'><h2>تنظیمات حساب و امنیت</h2><p class='muted'>زبان، ارز، اعلان‌ها، رمز عبور و حریم خصوصی از این بخش مدیریت می‌شوند.</p><a class='button' href='<?=url('/dashboard/freelancer')?>'>بازگشت به داشبورد</a></section></section>

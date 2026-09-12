@@ -12,11 +12,13 @@ final class FreelancerController extends Controller
 		}
 		return (int) Session::get('user_id');
 	}
-	public function dashboard(): void
-	{
-		$userId = $this->authorize();
-		$this->view('dashboard/freelancer/overview', ['title' => 'داشبورد فریلنسر', 'profile' => (new Profile())->findByUserId($userId), 'skills' => (new Skill())->forUser($userId), 'availableSkills' => (new Skill())->all(), 'jobs' => (new Job())->openForFreelancer($userId), 'proposals' => (new Proposal())->forFreelancer($userId), 'portfolios' => (new Portfolio())->forUser($userId)], 'dashboard');
-	}
+	private function data(int $userId): array { return ['profile'=>(new Profile())->findByUserId($userId),'skills'=>(new Skill())->forUser($userId),'availableSkills'=>(new Skill())->all(),'jobs'=>(new Job())->openForFreelancer($userId),'proposals'=>(new Proposal())->forFreelancer($userId),'portfolios'=>(new Portfolio())->forUser($userId)]; }
+	public function dashboard(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/overview',['title'=>'داشبورد فریلنسر']+$this->data($id),'dashboard'); }
+	public function profilePage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/profile',['title'=>'پروفایل فریلنسر']+$this->data($id),'dashboard'); }
+	public function jobsPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/jobs',['title'=>'پروژه‌های پیشنهادی']+$this->data($id),'dashboard'); }
+	public function proposalsPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/proposals',['title'=>'پیشنهادهای من']+$this->data($id),'dashboard'); }
+	public function portfolioPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/portfolio',['title'=>'نمونه‌کارهای من']+$this->data($id),'dashboard'); }
+	public function settingsPage(): void { $this->authorize(); $this->view('dashboard/freelancer/settings',['title'=>'تنظیمات حساب'],'dashboard'); }
 	public function saveProfile(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/freelancer'); }

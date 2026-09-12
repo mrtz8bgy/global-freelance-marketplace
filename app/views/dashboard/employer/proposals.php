@@ -1,0 +1,1 @@
+<section class='dashboard-content'><div class='dashboard-heading'><div class='eyebrow'>استخدام</div><h1>پیشنهادهای دریافتی</h1></div><?php include __DIR__.'/partials/proposals.php'; ?></section>
