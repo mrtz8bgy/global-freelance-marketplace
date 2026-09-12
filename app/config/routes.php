@@ -15,6 +15,9 @@ $router->get('/dashboard/freelancer/jobs', [FreelancerController::class, 'jobsPa
 $router->get('/dashboard/freelancer/proposals', [FreelancerController::class, 'proposalsPage']);
 $router->get('/dashboard/freelancer/portfolio', [FreelancerController::class, 'portfolioPage']);
 $router->get('/dashboard/freelancer/settings', [FreelancerController::class, 'settingsPage']);
+$router->get('/dashboard/freelancer/resume', [FreelancerController::class, 'resumePage']);
+$router->post('/dashboard/freelancer/resume', [FreelancerController::class, 'addResume']);
+$router->post('/dashboard/freelancer/resume/delete', [FreelancerController::class, 'deleteResume']);
 $router->post('/dashboard/freelancer/profile', [FreelancerController::class, 'saveProfile']);
 $router->post('/dashboard/freelancer/skills', [FreelancerController::class, 'addSkill']);
 $router->post('/dashboard/freelancer/proposals', [FreelancerController::class, 'submitProposal']);

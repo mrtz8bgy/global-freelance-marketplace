@@ -19,6 +19,9 @@ final class FreelancerController extends Controller
 	public function proposalsPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/proposals',['title'=>'پیشنهادهای من']+$this->data($id),'dashboard'); }
 	public function portfolioPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/portfolio',['title'=>'نمونه‌کارهای من']+$this->data($id),'dashboard'); }
 	public function settingsPage(): void { $this->authorize(); $this->view('dashboard/freelancer/settings',['title'=>'تنظیمات حساب'],'dashboard'); }
+	public function resumePage(): void { $id=$this->authorize(); $r=new Resume(); $this->view('dashboard/freelancer/resume',['title'=>'رزومه حرفه‌ای','experiences'=>$r->all($id,'work_experiences'),'educations'=>$r->all($id,'educations'),'certifications'=>$r->all($id,'certifications')],'dashboard'); }
+	public function addResume(): void { $id=$this->authorize(); if(!CSRF::verify($_POST['_csrf']??null)){$this->redirect('/dashboard/freelancer/resume');} $type=(string)($_POST['type']??''); $allowed=['experience','education','certification']; if(in_array($type,$allowed,true)){(new Resume())->create($id,$type,$_POST);Session::flash('success','اطلاعات رزومه ذخیره شد.');}$this->redirect('/dashboard/freelancer/resume'); }
+	public function deleteResume(): void { $id=$this->authorize(); if(CSRF::verify($_POST['_csrf']??null))(new Resume())->delete($id,(string)$_POST['type'],(int)$_POST['id']);$this->redirect('/dashboard/freelancer/resume'); }
 	public function saveProfile(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/freelancer'); }
