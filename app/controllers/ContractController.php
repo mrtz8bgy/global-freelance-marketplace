@@ -1,1 +1,8 @@
-<?php declare(strict_types=1); final class ContractController extends Controller {}
+<?php declare(strict_types=1);
+final class ContractController extends Controller
+{
+    private function user(): int { AuthMiddleware::handle(); return (int)Session::get('user_id'); }
+    public function index(): void { $id=$this->user(); $role=(string)Session::get('role'); $this->view('contracts/index',['title'=>'قراردادهای من','contracts'=>(new Contract())->forUser($id,$role)], $role==='employer'?'employer':'dashboard'); }
+    public function addMilestone(): void { $id=$this->user(); if(!CSRF::verify($_POST['_csrf']??null)){Session::flash('error','درخواست امنیتی نامعتبر است.');$this->redirect('/contracts');} $title=trim((string)($_POST['title']??''));$amount=(float)($_POST['amount']??0); if($title===''||$amount<=0){Session::flash('error','عنوان و مبلغ معتبر الزامی است.');$this->redirect('/contracts');} (new Contract())->addMilestone((int)$_POST['contract_id'],$title,trim((string)($_POST['description']??'')),$amount,$_POST['due_date']??null); Session::flash('success','Milestone با موفقیت اضافه شد.');$this->redirect('/contracts'); }
+    public function updateMilestone(): void { $id=$this->user(); if(!CSRF::verify($_POST['_csrf']??null)){Session::flash('error','درخواست امنیتی نامعتبر است.');$this->redirect('/contracts');} (new Contract())->updateMilestone((int)$_POST['milestone_id'],$id,(string)($_POST['status']??'')); Session::flash('success','وضعیت Milestone به‌روزرسانی شد.');$this->redirect('/contracts'); }
+}

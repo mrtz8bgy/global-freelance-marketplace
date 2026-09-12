@@ -1,1 +1,1 @@
-<?php declare(strict_types=1); final class SocialController extends Controller {}
+<?php declare(strict_types=1); final class SocialController extends Controller { public function index(): void { $this->view('social/feed',['title'=>'انجمن حرفه‌ای']); } }
