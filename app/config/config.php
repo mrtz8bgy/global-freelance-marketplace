@@ -25,21 +25,19 @@ require_once BASE_PATH . '/app/core/Security.php';
 require_once BASE_PATH . '/app/core/Validator.php';
 require_once BASE_PATH . '/app/core/Database.php';
 require_once BASE_PATH . '/app/core/Model.php';
-require_once BASE_PATH . '/app/models/User.php';
+// Load the base model before dependent model classes, then load the remainder.
 require_once BASE_PATH . '/app/models/Profile.php';
-require_once BASE_PATH . '/app/models/Skill.php';
-require_once BASE_PATH . '/app/models/Job.php';
-require_once BASE_PATH . '/app/models/Proposal.php';
-require_once BASE_PATH . '/app/models/Portfolio.php';
-require_once BASE_PATH . '/app/models/Invitation.php';
+foreach (glob(BASE_PATH . '/app/models/*.php') ?: [] as $modelFile) {
+	if (basename($modelFile) !== 'Profile.php') require_once $modelFile;
+}
 require_once BASE_PATH . '/app/middleware/AdminMiddleware.php';
 require_once BASE_PATH . '/app/middleware/AuthMiddleware.php';
-require_once BASE_PATH . '/app/controllers/EmployerController.php';
-require_once BASE_PATH . '/app/controllers/HomeController.php';
-require_once BASE_PATH . '/app/controllers/AuthController.php';
-require_once BASE_PATH . '/app/controllers/FreelancerController.php';
-require_once BASE_PATH . '/app/controllers/ErrorController.php';
-require_once BASE_PATH . '/app/controllers/AdminController.php';
+foreach (glob(BASE_PATH . '/app/middleware/*.php') ?: [] as $middlewareFile) {
+	require_once $middlewareFile;
+}
+foreach (glob(BASE_PATH . '/app/controllers/*.php') ?: [] as $controllerFile) {
+	require_once $controllerFile;
+}
 
 error_reporting(APP_ENV === 'production' ? 0 : E_ALL);
 ini_set('display_errors', APP_ENV === 'production' ? '0' : '1');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 final class AuthController extends Controller
 {
     public function showLogin(): void { $this->view('auth/login', ['title' => 'ورود به حساب کاربری'], 'auth'); }
-    public function showRegister(): void { $role = in_array($_GET['role'] ?? '', ['freelancer', 'employer'], true) ? $_GET['role'] : ''; if ($role !== '') $_POST['role'] = $role; $this->view('auth/register', ['title' => 'ساخت حساب کاربری', 'default_role' => $role], 'auth'); }
+    public function showRegister(): void { $role = in_array($_GET['role'] ?? '', ['freelancer', 'employer'], true) ? $_GET['role'] : ''; $this->view('auth/register', ['title' => 'ساخت حساب کاربری', 'default_role' => $role], 'auth'); }
     public function login(): void
     {
         if (!RateLimitMiddleware::hit('login_'.($_SERVER['REMOTE_ADDR']??'unknown'),8,300)) { Session::flash('error','تعداد تلاش‌ها زیاد است. چند دقیقه بعد دوباره تلاش کنید.'); $this->redirect('/login'); }
