@@ -20,6 +20,11 @@ final class AdminController extends Controller
 	private function countTable(string $table): int { return (int) Database::connection()->query("SELECT COUNT(*) FROM `{$table}`")->fetchColumn(); }
 	public function users(): void { AdminMiddleware::handle(); $this->view('admin/users', ['title' => 'مدیریت کاربران', 'users' => (new User())->allForAdmin((string) ($_GET['status'] ?? ''), (string) ($_GET['role'] ?? ''))], 'admin'); }
 	public function jobs(): void { $this->resourcePage('jobs', 'مدیریت پروژه‌ها', 'شناسه، عنوان، بودجه و وضعیت پروژه‌ها'); }
+	public function freelancers(): void { $this->resourcePage('freelancer_profiles', 'مدیریت فریلنسرها', 'پروفایل‌های فریلنسرها'); }
+	public function employers(): void { $this->resourcePage('employer_profiles', 'مدیریت کارفرمایان', 'پروفایل‌های کارفرمایان'); }
+	public function skills(): void { $this->resourcePage('skills', 'مدیریت مهارت‌ها', 'مهارت‌های قابل انتخاب کاربران'); }
+	public function categories(): void { $this->resourcePage('categories', 'مدیریت دسته‌بندی‌ها', 'دسته‌بندی‌های پروژه و مهارت'); }
+	public function portfolios(): void { $this->resourcePage('portfolios', 'مدیریت نمونه‌کارها', 'نمونه‌کارهای منتشرشده'); }
 	public function proposals(): void { $this->resourcePage('proposals', 'مدیریت پیشنهادها', 'پیشنهادهای ارسال‌شده توسط فریلنسرها'); }
 	public function reports(): void { $this->resourcePage('reports', 'صف گزارش‌ها', 'گزارش‌های نیازمند بررسی تیم پشتیبانی'); }
 	public function transactions(): void { $this->resourcePage('transactions', 'تراکنش‌های مالی', 'دفتر ثبت رویدادهای مالی پلتفرم'); }
@@ -32,12 +37,12 @@ final class AdminController extends Controller
 	private function resourcePage(string $table, string $title, string $description): void
 	{
 		AdminMiddleware::handle();
-		$allowed = ['jobs','proposals','reports','transactions','audit_logs','platform_commissions'];
+		$allowed = ['jobs','proposals','reports','transactions','audit_logs','platform_commissions','freelancer_profiles','employer_profiles','skills','categories','portfolios'];
 		if (!in_array($table, $allowed, true)) { $this->redirect('/admin'); return; }
 		$db = Database::connection();
 		$columns = ['id','created_at'];
 		$available = $db->query("DESCRIBE `{$table}`")->fetchAll(PDO::FETCH_COLUMN);
-		$columns = array_values(array_intersect(['id','title','status','email','amount','type','action','user_id','job_id','contract_id','gross_amount','rate','commission_amount','target_type','target_id','reason','created_at'], $available));
+		$columns = array_values(array_intersect(['id','title','name','slug','display_name','headline','status','email','amount','type','action','user_id','job_id','contract_id','gross_amount','rate','commission_amount','target_type','target_id','reason','created_at'], $available));
 		$rows = $db->query('SELECT '.implode(',', array_map(fn($c) => "`$c`", $columns))." FROM `{$table}` ORDER BY `created_at` DESC LIMIT 100")->fetchAll();
 		$this->view('admin/resource', compact('title','description','table','columns','rows'), 'admin');
 	}
