@@ -13,6 +13,8 @@ final class FreelancerController extends Controller
 		return (int) Session::get('user_id');
 	}
 	private function data(int $userId): array { return ['profile'=>(new Profile())->findByUserId($userId),'skills'=>(new Skill())->forUser($userId),'availableSkills'=>(new Skill())->all(),'jobs'=>(new Job())->openForFreelancer($userId),'proposals'=>(new Proposal())->forFreelancer($userId),'portfolios'=>(new Portfolio())->forUser($userId)]; }
+	public function publicIndex(): void { $this->view('freelancers/index',['title'=>'فریلنسرهای حرفه‌ای','freelancers'=>(new Profile())->freelancers()]); }
+	public function publicProfile(): void { $username=trim((string)($_GET['username']??''));$profile=(new Profile())->findByUsername($username);if(!$profile){http_response_code(404);(new ErrorController())->notFound();return;}$this->view('freelancers/show',['title'=>$profile['display_name'],'profile'=>$profile,'skills'=>(new Skill())->forUser((int)$profile['user_id']),'portfolios'=>(new Portfolio())->forUser((int)$profile['user_id']),'experiences'=>(new Resume())->all((int)$profile['user_id'],'work_experiences'),'educations'=>(new Resume())->all((int)$profile['user_id'],'educations'),'certifications'=>(new Resume())->all((int)$profile['user_id'],'certifications')]); }
 	public function dashboard(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/overview',['title'=>'داشبورد فریلنسر']+$this->data($id),'dashboard'); }
 	public function profilePage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/profile',['title'=>'پروفایل فریلنسر']+$this->data($id),'dashboard'); }
 	public function jobsPage(): void { $id=$this->authorize(); $this->view('dashboard/freelancer/jobs',['title'=>'پروژه‌های پیشنهادی']+$this->data($id),'dashboard'); }
@@ -37,6 +39,8 @@ final class FreelancerController extends Controller
 		if ((int) ($_POST['skill_id'] ?? 0) > 0) (new Skill())->attachToUser($userId, (int) $_POST['skill_id'], $level);
 		Session::flash('success', 'مهارت به پروفایل اضافه شد.'); $this->redirect('/dashboard/freelancer');
 	}
+	public function savedJobs(): void { $id=$this->authorize();$this->view('dashboard/freelancer/saved-jobs',['title'=>'پروژه‌های ذخیره‌شده','jobs'=>(new SavedItem())->jobs($id)],'dashboard'); }
+	public function toggleSavedJob(): void { $id=$this->authorize();if(CSRF::verify($_POST['_csrf']??null))(new SavedItem())->toggleJob($id,(int)$_POST['job_id']);$this->redirect('/dashboard/freelancer/jobs'); }
 	public function submitProposal(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/freelancer'); }

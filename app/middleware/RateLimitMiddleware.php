@@ -1,1 +1,1 @@
-<?php declare(strict_types=1); final class RateLimitMiddleware {}
+<?php declare(strict_types=1); final class RateLimitMiddleware { public static function hit(string $key,int $max=8,int $window=300): bool { Session::start();$now=time();$data=Session::get('_rate_'.$key,[]);$data=array_values(array_filter($data,fn($t)=>$t>$now-$window));if(count($data)>=$max)return false;$data[]=$now;Session::put('_rate_'.$key,$data);return true; } }

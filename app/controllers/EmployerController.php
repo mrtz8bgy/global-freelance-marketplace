@@ -36,6 +36,8 @@ final class EmployerController extends Controller
 		$jobId = (new Job())->create($userId, ['title' => $title, 'slug' => $slug, 'description' => $description, 'budget_min' => $min, 'budget_max' => $max]);
 		(new Job())->addSkills($jobId, (array) ($_POST['skill_ids'] ?? [])); Session::flash('success', 'پروژه با موفقیت منتشر شد.'); $this->redirect('/dashboard/employer');
 	}
+	public function updateJobStatus(): void { $id=$this->authorize();if(CSRF::verify($_POST['_csrf']??null))(new Job())->updateStatus((int)$_POST['job_id'],$id,(string)$_POST['status']);$this->redirect('/dashboard/employer/jobs'); }
+	public function deleteJob(): void { $id=$this->authorize();if(CSRF::verify($_POST['_csrf']??null))(new Job())->deleteOwned((int)$_POST['job_id'],$id);$this->redirect('/dashboard/employer/jobs'); }
 	public function inviteFreelancer(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/employer'); }
@@ -44,6 +46,8 @@ final class EmployerController extends Controller
 		try { (new Invitation())->create($userId, (int) $_POST['job_id'], (int) $_POST['freelancer_id'], $message, $amount); Session::flash('success', 'دعوت همکاری برای فریلنسر ارسال شد.'); } catch (Throwable $e) { Session::flash('error', 'ارسال دعوت انجام نشد؛ پروژه و فریلنسر را بررسی کنید.'); }
 		$this->redirect('/dashboard/employer');
 	}
+	public function savedFreelancers(): void { $id=$this->authorize();$this->view('dashboard/employer/saved-freelancers',['title'=>'فریلنسرهای ذخیره‌شده','freelancers'=>(new SavedItem())->freelancers($id)],'employer'); }
+	public function toggleSavedFreelancer(): void { $id=$this->authorize();if(CSRF::verify($_POST['_csrf']??null))(new SavedItem())->toggleFreelancer($id,(int)$_POST['freelancer_id']);$this->redirect('/dashboard/employer/freelancers'); }
 	public function updateProposalStatus(): void
 	{
 		$userId = $this->authorize(); if (!CSRF::verify($_POST['_csrf'] ?? null)) { Session::flash('error', 'درخواست امنیتی نامعتبر است.'); $this->redirect('/dashboard/employer#proposals'); }
