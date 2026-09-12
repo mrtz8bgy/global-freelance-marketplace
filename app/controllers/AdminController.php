@@ -23,19 +23,21 @@ final class AdminController extends Controller
 	public function proposals(): void { $this->resourcePage('proposals', 'مدیریت پیشنهادها', 'پیشنهادهای ارسال‌شده توسط فریلنسرها'); }
 	public function reports(): void { $this->resourcePage('reports', 'صف گزارش‌ها', 'گزارش‌های نیازمند بررسی تیم پشتیبانی'); }
 	public function transactions(): void { $this->resourcePage('transactions', 'تراکنش‌های مالی', 'دفتر ثبت رویدادهای مالی پلتفرم'); }
+	public function commissions(): void { $this->resourcePage('platform_commissions', 'کمیسیون‌های پلتفرم', 'درآمد سایت از قراردادهای موفق'); }
 	public function auditLogs(): void { $this->resourcePage('audit_logs', 'گزارش فعالیت مدیران', 'رویدادهای حساس برای کنترل و امنیت'); }
 	public function banners(): void { AdminMiddleware::handle(); $this->view('admin/banners',['title'=>'مدیریت بنرهای صفحه اصلی','banners'=>(new Banner())->all()],'admin'); }
 	public function createBanner(): void { AdminMiddleware::handle(); if(!CSRF::verify($_POST['_csrf']??null)){Session::flash('error','درخواست امنیتی نامعتبر است.');$this->redirect('/admin/banners');} $title=trim((string)($_POST['title']??'')); if($title===''){Session::flash('error','عنوان بنر الزامی است.');$this->redirect('/admin/banners');} (new Banner())->create(['title'=>$title,'subtitle'=>trim((string)($_POST['subtitle']??'')),'cta_text'=>trim((string)($_POST['cta_text']??'')),'cta_url'=>trim((string)($_POST['cta_url']??'/register')),'image_url'=>trim((string)($_POST['image_url']??'')),'sort_order'=>(int)($_POST['sort_order']??0),'status'=>$_POST['status']==='active'?'active':'draft']); Session::flash('success','بنر با موفقیت ایجاد شد.');$this->redirect('/admin/banners'); }
 	public function bannerStatus(): void { AdminMiddleware::handle(); if(CSRF::verify($_POST['_csrf']??null))(new Banner())->updateStatus((int)$_POST['banner_id'],(string)$_POST['status']);$this->redirect('/admin/banners'); }
+	public function deleteResource(): void { AdminMiddleware::handle(); if(!CSRF::verify($_POST['_csrf']??null)){$this->redirect('/admin');} $table=(string)($_POST['table']??'');$id=(int)($_POST['id']??0);if(in_array($table,['jobs','posts','reports'],true)&&$id>0){$db=Database::connection();$db->prepare("DELETE FROM `{$table}` WHERE id=:id")->execute(['id'=>$id]);} $this->redirect('/admin/'.$table); }
 	private function resourcePage(string $table, string $title, string $description): void
 	{
 		AdminMiddleware::handle();
-		$allowed = ['jobs','proposals','reports','transactions','audit_logs'];
+		$allowed = ['jobs','proposals','reports','transactions','audit_logs','platform_commissions'];
 		if (!in_array($table, $allowed, true)) { $this->redirect('/admin'); return; }
 		$db = Database::connection();
 		$columns = ['id','created_at'];
 		$available = $db->query("DESCRIBE `{$table}`")->fetchAll(PDO::FETCH_COLUMN);
-		$columns = array_values(array_intersect(['id','title','status','email','amount','type','action','user_id','job_id','created_at'], $available));
+		$columns = array_values(array_intersect(['id','title','status','email','amount','type','action','user_id','job_id','contract_id','gross_amount','rate','commission_amount','target_type','target_id','reason','created_at'], $available));
 		$rows = $db->query('SELECT '.implode(',', array_map(fn($c) => "`$c`", $columns))." FROM `{$table}` ORDER BY `created_at` DESC LIMIT 100")->fetchAll();
 		$this->view('admin/resource', compact('title','description','table','columns','rows'), 'admin');
 	}
